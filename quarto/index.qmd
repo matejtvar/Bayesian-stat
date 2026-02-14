@@ -1,17 +1,23 @@
 ---
-title: "Assignement.BS_Tvaruzka"
+title: "Assignement - Bayesian Statistics"
 author: "Matěj Tvarůžka"
 date: "2026-02-16"
 format: html
 ---
 
 # Coexistence of birds in the artificial community
-## Question: How the probability of co-occurrence within the community increases with niche differentiation
 
+## Question: How the probability of co-occurrence within the community increases with niche differentiation among two sisters species and among other species in the community?
 
-## Running Code
+::: callout-note
+## Steps
 
+1.   Generate data
 
+2.  Basic visualization
+
+3.   Model evaluation
+:::
 
 ```{r}
 library(rethinking)
@@ -23,5 +29,3 @@ You can add options to executable code like this
 #| echo: false
 2 * 2
 ```
-
-
