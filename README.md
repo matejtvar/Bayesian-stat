@@ -14,10 +14,10 @@ So that is it. Optionally, if you want feedback on your analysis or on your prio
 
 # My topic: Bayesian analysis of syntopy (local Co-occurence) in birds using data from Remeš & Harmáčková 2023
 
-In this assignment I want to analyse data from the template study of my supervisor prof. Vladimír Remeš. I am going to replicate his approach in my master's thesis and we already decide to do it the Bayesian way.
-Here is the plan: 
+In this assignment I analyse the data from the template study of my supervisor prof. Vladimír Remeš. I am going to replicate his approach in my master's thesis and we already decide to do it the Bayesian way, because it provides advantages over traditionally used indicies of co-occurrence.
 
-We will analyse species co-occurence using **Fisher's non-central hypergeometric distribution** for the occurence data of sister species pairs to examine which niche and spatial predictors facilitate/impede their presence on the same local sites.
+Here is the plan: 
+We will analyse species co-occurrence using **Fisher's non-central hypergeometric distribution** for the occurence data of sister species pairs to examine which niche and spatial predictors facilitate/impede their presence on the same local sites.
 
 
 # Master Thesis Proposal
