@@ -18,8 +18,14 @@ Here is the plan:
 We will analyse species co-occurence using **Fisher's non-central hypergeometric distribution** for the occurence data of sister species pairs to examine which niche and spatial predictors facilitate/impede their presence on the same local sites.
 
 
-## Master Thesis Proposal
+# Master Thesis Proposal
+## Secondary syntopy in North American passerines: Multiscale analysis using the BBS dataset
+## Supervisor: Prof. Vladimír Remeš
 
+### Annotation
+Understanding the ecological and evolutionary drivers of local cooccurrence (syntopy) among closely related species is key to explaining biodiversity patterns. My Bachelor's thesis, Ecology and Evolution of Secondary Sympatry in Birds, provides a theoretical foundation for this topic by exploring how ecological divergence facilitates co-existence following range overlap. Building on this framework, my master’s thesis will focus on the ecology and evolution of local syntopy in North American passerines using data from the North American Breeding Bird Survey (BBS), a standardised large-scale monitoring programme. The central hypothesis is that local syntopy is promoted by ecological divergence, particularly in resource use, and that the influence of such predictors differs between spatial scales. I will assess syntopy at the scale of individual point counts and entire transects, and evaluate the role of species traits in shaping these patterns. The methodological approach will replicate the framework of Remeš & Harmáčková (2023), which uses unbiased cooccurrence analyses to infer the drivers of syntopy.
+
+### Methods
 The study will use data from the North American Breeding Bird Survey (BBS), a long-term, standardised monitoring programme that records bird assemblages across approximately 2,900 routes annually. Each route includes 50 point counts spaced at 0.5-mile intervals. I will analyse patterns of syntopy at two spatial resolutions:
 
 - Point scale (individual stops)
