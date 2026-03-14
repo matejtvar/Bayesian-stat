@@ -10,6 +10,8 @@ So that is it. Optionally, if you want feedback on your analysis or on your prio
 
 3. Add a block that will demonstrate (preferably with an ulam function) that you can extract the same parameter values that you baked in from that generated data. You will see that after generating the data properly, this step comes almost for free, so we encourage you to do this.
 
+**Some people asked me this: If you already have your dream data (collected, for instance, within work on your diploma or research in general) it is fine to start with loading the empirical data and analysing them the Bayesian way. So, just submitting a high-quality version of 3 is also a passable strategy.**
+
 # My topic: Bayesian analysis of syntopy (local Co-occurence) in birds using data from Remeš & Harmáčková 2023
 
 In this assignment I want to analyse data from the template study of my supervisor prof. Vladimír Remeš. I am going to replicate his approach in my master's thesis and we already decide to do it the Bayesian way.
