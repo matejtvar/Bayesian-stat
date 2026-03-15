@@ -5,27 +5,40 @@ date: "2026-02-16"
 format: html
 ---
 
-# Coexistence of birds in the artificial community
+# Coexistence (syntopy) of sister species on a local scale
 
-## Question: How the probability of co-occurrence within the community increases with niche differentiation among two sisters species and among other species in the community?
+**Question: How can two closely sister species of birds co-occurr at the same site?**
 
 ::: callout-note
 ## Steps
 
-1.   Generate data
+1.  Description of data and problem
 
 2.  Basic visualization
 
-3.   Model evaluation
+3.  Model evaluation
 :::
+
+## 1. Data and problem
+
+To estimate the importance of preditors for syntopy, we take a look at the probabilities of species co-occurence at the same sites. We need to select only the sites within the range overlap (sympatry) of these two species (otherwise the results will be biased -see Remeš & Harmáčková 2023).
+
+We can imagine the range overlap being the bag, from which we randomly draw co-occurence states. There are four possible outcomes of that drowing: 1) both species are present, 2) species A is present, 3) species B is present or 4) both species are missing at the site. The most accurate probability distribution for this process is the Fisher's non-central hypergeometric distribution, where *N* stands for the population size (number of sites within the sympatric range), *K* is the number of co-occurrence states (*K* = 4), *n* is the number of draws and *k* stands for number of co-occurrences.
+
+$$
+\begin{aligned}
+K_{ij} &\sim \text{fnchypg}(\vec{m}_i, N - \vec{m}_i, \vec{m}_j, e^\alpha) \\
+\alpha &= \beta_0 + \lambda_i + \lambda_j + \beta X \\
+\beta_k &\sim \text{N}(0, 1) \\
+\beta_0 &\sim \text{N}(0, 4) \\
+\lambda_i &\sim \text{N}(0, 1)
+\end{aligned}
+$$\
 
 ```{r}
 library(rethinking)
 ```
 
-You can add options to executable code like this
-
 ```{r}
-#| echo: false
-2 * 2
+
 ```
