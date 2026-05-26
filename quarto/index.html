@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Matěj Tvarůžka">
-<meta name="dcterms.date" content="2026-05-24">
+<meta name="dcterms.date" content="2026-05-26">
 
-<title>Bayesian Analysis of Syntopy in Sister Species Pairs</title>
+<title>Bayesian Analysis of Syntopy</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -115,7 +115,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Bayesian Analysis of Syntopy in Sister Species Pairs</h1>
+<h1 class="title">Bayesian Analysis of Syntopy</h1>
 </div>
 
 
@@ -132,7 +132,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 24, 2026</p>
+      <p class="date">May 26, 2026</p>
     </div>
   </div>
   
@@ -146,9 +146,10 @@ window.Quarto = {
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>Following the framework of Remeš &amp; Harmáčková (2023), this assignment simulates and analyzes local co-occurrence (syntopy) in bird sister species pairs. I model the co-occurrence probability at local sites as a function of ecological and spatial predictors.</p>
-<p>We can imagine the range overlap being the jar, from which we randomly draw co-occurence states. There are four possible outcomes of that drowing: 1) both species are present, 2) species A is present, 3) species B is present or 4) both species are missing at the site. To measure the affinity of species co-occurence we use log odds ratio as it makes the odds ratio centered around zero makes the final scale linear.</p>
-<p>If we want to model this problem using the Bayesian methods, than the most accurate probability distribution for this process is the Fisher’s non-central hypergeometric distribution, where <em>N</em> stands for the population size (number of sites within the sympatric zone), <em>K</em> is the number of co-occurrence states (<em>K</em> = 4), <em>n</em> is the number of draws and <em>k</em> stands for number of co-occurrences. This distribution is accurate, because the sampling is carried out without replacement which matches the true nature of the problem as we have a limited number of pairs, however I will compare the result with the binomial distribution as well.</p>
+<p>problem of double zeros!</p>
+<p>Following the framework of Remeš &amp; Harmáčková (2023), this assignment simulates and analyzes local co-occurrence (syntopy) in bird sister species pairs. I model the co-occurrence probability at local sites as a function of ecological and spatial predictors. This idea is connected to the topic of my master’s thesis, as I model syntopy on two spatial scale using BBS data and Bayesian framework.</p>
+<p>We can imagine the range overlap being the jar, from which we randomly draw co-occurence states. There are four possible outcomes of that drowing: 1) both species are present, 2) species A is present, 3) species B is present or 4) both species are missing at the site. To measure an affinity of species co-occurence we use log odds ratio as it makes the odds ratio centered around zero, which makes the final scale linear.</p>
+<p>If we want to model this problem using the Bayesian methods, than the most accurate probability distribution for this process is the <strong>Fisher’s non-central hypergeometric distribution</strong>, where <em>N</em> stands for the population size (number of sites within the sympatric zone), <em>K</em> is the number of co-occurrence states (<em>K</em> = 4), <em>n</em> is the number of draws and <em>k</em> stands for number of co-occurrences. This distribution is accurate, because the sampling is carried out without replacement (unlike binomial distribution) which matches the true nature of the problem as we have a limited number of pairs.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -160,7 +161,7 @@ window.Quarto = {
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li>Generate data for simulation for N=100 and N=500 for both Fisher’s hypergeometric and binomial distribution.</li>
+<li>Generate data for simulation for N=100 pairs for both Fisher’s hypergeometric and binomial distribution.</li>
 <li>Model co-occurrence using Fisher’s hypergeometric distribution</li>
 <li>Model co-occurrence using approximation with binomial distribution.</li>
 <li>Compare both models.</li>
@@ -174,15 +175,15 @@ window.Quarto = {
 <ul>
 <li><p><span class="math inline">\(\beta_{0} = 0.5\)</span> (Baseline log-odds of co-occurrence; slight facilitation)</p></li>
 <li><p><span class="math inline">\(\beta_{res.div} = -0.8\)</span> (Resource use divergence: greater divergence decreases syntopy)</p></li>
-<li><p><span class="math inline">\(\beta_{hab.pref} = 0.5\)</span> (Similar microhabitat and environmental preference increases syntopy)</p></li>
+<li><p><span class="math inline">\(\beta_{hab.pref} = 0.6\)</span> (Similar microhabitat and environmental preference increases syntopy)</p></li>
 <li><p><span class="math inline">\(\beta_{sympatry} = 1.2\)</span> (Spatial overlap: regional overlap strongly increases syntopy)</p></li>
-<li><p><span class="math inline">\(\beta_{prod} = 0.3\)</span> (Environmental productivity: richer environments support co-occurrence)</p></li>
+<li><p><span class="math inline">\(\beta_{prod} = 0.3\)</span> (Environmental productivity (e.g., NDVI): richer environments support co-occurrence)</p></li>
 </ul>
 <section id="fishers-hypergeometric-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="fishers-hypergeometric-distribution">Fishers’ Hypergeometric Distribution</h2>
 <section id="mathematical-formulation" class="level3">
 <h3 class="anchored" data-anchor-id="mathematical-formulation">Mathematical Formulation</h3>
-<p>For each site <span class="math inline">\(i\)</span> out of <span class="math inline">\(N = 100\)</span>, the co-occurrence affinity (<span class="math inline">\(α\)</span>) is governed by the logarithmic function:</p>
+<p>For each site <span class="math inline">\(i\)</span> out of <span class="math inline">\(N = 100\)</span>, the co-occurrence affinity (<span class="math inline">\(α\)</span>) is the log-odds ratio of given parameters:</p>
 <p><span class="math display">\[\text{log}(ω_i) = \beta_{0} + \beta_{res.div} \cdot X_{1,i} + \beta_{hab.pref} \cdot X_{2,i} + \beta_{sympatry} \cdot X_{3,i} + \beta_{prod} \cdot X_{4,i}\]</span></p>
 <p>The observed co-occurrence <span class="math inline">\(k_i\)</span> is modeled with <strong>Fisher’s Hypergeometric distribution</strong> representing local survey plots within that site:</p>
 <p><span class="math display">\[k_i \sim \text{FisherHypergeometric}(m_{1i},m_{2i}, N_i, ω_i)\]</span></p>
@@ -197,16 +198,15 @@ window.Quarto = {
 </section>
 <section id="data-generation" class="level3">
 <h3 class="anchored" data-anchor-id="data-generation">Data Generation</h3>
+<p>For the Fisher’s hypergeometric distribution we can use the library <code>BiasedUrn</code></p>
+<p>For the number of sites I choose a gamma-Poisson distribution as it is an integer</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BiasedUrn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>num_pairs <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">rpois</span>(num_pairs, <span class="at">lambda =</span> <span class="fu">rgamma</span>(<span class="at">n =</span> num_pairs, <span class="at">shape =</span> <span class="dv">5</span>, <span class="at">rate =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)) <span class="sc">+</span> <span class="dv">5</span> <span class="co"># Added +5 to ensure no pairs have 0 or too few total routes</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(num_pairs, <span class="at">size =</span> N, <span class="at">prob =</span> <span class="fl">0.5</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(num_pairs, <span class="at">size =</span> N, <span class="at">prob =</span> <span class="fl">0.5</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(N)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>num_pairs <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">rpois</span>(num_pairs, <span class="at">lambda =</span> <span class="fu">rgamma</span>(<span class="at">n =</span> num_pairs, <span class="at">shape =</span> <span class="dv">2</span>, <span class="at">rate =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">100</span>)) <span class="co"># gamma-Poisson distribution, N of sites</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(num_pairs, <span class="at">size =</span> N, <span class="at">prob =</span> <span class="fl">0.5</span>) <span class="co"># sites with species A</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(num_pairs, <span class="at">size =</span> N, <span class="at">prob =</span> <span class="fl">0.5</span>) <span class="co"># sites with species B</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(N)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -214,21 +214,33 @@ window.Quarto = {
 </figure>
 </div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    4.0    55.0    86.0   101.5   140.0   336.0 </code></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    3.0    52.0    91.5   100.7   137.2   325.0 </code></pre>
+</div>
+</div>
+<p>Some species pairs have very large number of sampled sites, while some of them have just a few sampled sites within the sympatric range. Min. 1st Qu. Median Mean 3rd Qu. Max. 6.0 103.8 172.0 201.1 274.8 658.0</p>
+<p>Let’s continue with the generation of parameter values. Note that we need to standardize all parameters before proceeding.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X_res_div   <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(num_pairs, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>) <span class="co"># X1</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>X_hab_pref  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(num_pairs, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>) <span class="co"># X2</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Sympatry</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>raw_beta <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(num_pairs, <span class="at">shape1 =</span> <span class="dv">2</span>, <span class="at">shape2 =</span> <span class="dv">1</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>target_min <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>target_max <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>sympatry <span class="ot">&lt;-</span> target_min <span class="sc">+</span> (raw_beta <span class="sc">-</span> <span class="fu">min</span>(raw_beta)) <span class="sc">*</span> (target_max <span class="sc">-</span> target_min) <span class="sc">/</span> (<span class="fu">max</span>(raw_beta) <span class="sc">-</span> <span class="fu">min</span>(raw_beta))</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>X_sympatry <span class="ot">&lt;-</span> (sympatry <span class="sc">-</span> <span class="fu">mean</span>(sympatry)) <span class="sc">/</span> <span class="fu">sd</span>(sympatry) <span class="co"># X3</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the distribution structure</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sympatry, <span class="at">breaks =</span> <span class="dv">12</span>, <span class="at">main=</span><span class="st">"Simulated Sympatry (%)"</span>, <span class="at">xlab=</span><span class="st">"Percentage Overlap"</span>, <span class="at">col=</span><span class="st">"darkseagreen3"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>X_res_div   <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(num_pairs, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>) <span class="co"># X1</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>X_hab_pref  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(num_pairs, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>) <span class="co"># X2</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Sympatry</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>raw_beta <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(num_pairs, <span class="at">shape1 =</span> <span class="dv">2</span>, <span class="at">shape2 =</span> <span class="dv">1</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>target_min <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="co"># sympatry treshold is 5 %</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>target_max <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># full overlap</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>sympatry <span class="ot">&lt;-</span> target_min <span class="sc">+</span> (raw_beta <span class="sc">-</span> <span class="fu">min</span>(raw_beta)) <span class="sc">*</span> (target_max <span class="sc">-</span> target_min) <span class="sc">/</span> (<span class="fu">max</span>(raw_beta) <span class="sc">-</span> <span class="fu">min</span>(raw_beta)) <span class="co"># z-score of sympatry</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>X_sympatry <span class="ot">&lt;-</span> (sympatry <span class="sc">-</span> <span class="fu">mean</span>(sympatry)) <span class="sc">/</span> <span class="fu">sd</span>(sympatry) <span class="co"># X3</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the distribution structure</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sympatry, <span class="at">breaks =</span> <span class="dv">12</span>, <span class="at">main=</span><span class="st">"Simulated Sympatry (%)"</span>, <span class="at">xlab=</span><span class="st">"Percentage Overlap"</span>, <span class="at">col=</span><span class="st">"darkseagreen3"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -236,7 +248,7 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(X_sympatry, <span class="at">breaks =</span> <span class="dv">12</span>, <span class="at">main=</span><span class="st">"zSympatry (Standardized)"</span>, <span class="at">xlab=</span><span class="st">"Z-score"</span>, <span class="at">col=</span><span class="st">"steelblue"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(X_sympatry, <span class="at">breaks =</span> <span class="dv">12</span>, <span class="at">main=</span><span class="st">"zSympatry (Standardized)"</span>, <span class="at">xlab=</span><span class="st">"Z-score"</span>, <span class="at">col=</span><span class="st">"steelblue"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -244,89 +256,77 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sympatry)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>X_prod      <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(num_pairs, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>) <span class="co"># X4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now we set the “true” values for the parameters in our ideal universe.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>beta_0        <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>beta_res_div  <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.8</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>beta_hab_pref <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>beta_sympatry <span class="ot">&lt;-</span> <span class="fl">1.2</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>beta_prod     <span class="ot">&lt;-</span> <span class="fl">0.3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Next step is the calculation of linear combination of parameters and we exponentiate the log-odds to get simple odds ratio.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>log_omega <span class="ot">&lt;-</span> beta_0 <span class="sc">+</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>             beta_res_div  <span class="sc">*</span> X_res_div <span class="sc">+</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>             beta_hab_pref <span class="sc">*</span> X_hab_pref <span class="sc">+</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>             beta_sympatry <span class="sc">*</span> X_sympatry <span class="sc">+</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>             beta_prod     <span class="sc">*</span> X_prod</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>omega <span class="ot">&lt;-</span> <span class="fu">exp</span>(log_omega)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>With this settedup, we calculate the linear predictor (alpha) for each pair.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">integer</span>(num_pairs)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>num_pairs) {</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Simple safety boundary: if a species isn't present at all, co-occurrence is 0</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(m1[i] <span class="sc">==</span> <span class="dv">0</span> <span class="sc">||</span> m2[i] <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    k[i] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rFNCHypergeo(n_samples, m1, m2, total_draws, odds)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Note: BiasedUrn expects: m1 = white balls, m2 = black balls, n = balls drawn</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    k[i] <span class="ot">&lt;-</span> <span class="fu">rFNCHypergeo</span>(<span class="dv">1</span>, m1[i], N[i] <span class="sc">-</span> m1[i], m2[i], omega[i])</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sim_data_fischer <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">N =</span> N, <span class="at">m1 =</span> m1, <span class="at">m2 =</span> m2, <span class="at">k =</span> k,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">res_div =</span> X_res_div, <span class="at">hab_pref =</span> X_hab_pref, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sympatry =</span> X_sympatry, <span class="at">prod =</span> X_prod</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sim_data_fischer)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-   5.00   50.17   68.22   65.10   85.92  100.00 </code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X_prod      <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(num_pairs, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>) <span class="co"># X4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>beta_0        <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>beta_res_div  <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.8</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>beta_hab_pref <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>beta_sympatry <span class="ot">&lt;-</span> <span class="fl">1.2</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>beta_prod     <span class="ot">&lt;-</span> <span class="fl">0.3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>log_omega <span class="ot">&lt;-</span> beta_0 <span class="sc">+</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>             beta_res_div  <span class="sc">*</span> X_res_div <span class="sc">+</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>             beta_hab_pref <span class="sc">*</span> X_hab_pref <span class="sc">+</span> </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>             beta_sympatry <span class="sc">*</span> X_sympatry <span class="sc">+</span> </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>             beta_prod     <span class="sc">*</span> X_prod</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>omega <span class="ot">&lt;-</span> <span class="fu">exp</span>(log_omega)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the linear predictor (alpha) for each pair</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">integer</span>(num_pairs)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>num_pairs) {</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Simple safety boundary: if a species isn't present at all, co-occurrence is 0</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(m1[i] <span class="sc">==</span> <span class="dv">0</span> <span class="sc">||</span> m2[i] <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    k[i] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rFNCHypergeo(n_samples, m1, m2, total_draws, odds)</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Note: BiasedUrn expects: m1 = white balls, m2 = black balls, n = balls drawn</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    k[i] <span class="ot">&lt;-</span> <span class="fu">rFNCHypergeo</span>(<span class="dv">1</span>, m1[i], N[i] <span class="sc">-</span> m1[i], m2[i], omega[i])</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sim_data_100 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">N =</span> N, <span class="at">m1 =</span> m1, <span class="at">m2 =</span> m2, <span class="at">k =</span> k,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">res_div =</span> X_res_div, <span class="at">hab_pref =</span> X_hab_pref, </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sympatry =</span> X_sympatry, <span class="at">prod =</span> X_prod</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sim_data_100)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   N m1 m2  k    res_div    hab_pref   sympatry       prod
-1 18 12  6  5 -1.4805676  1.92671883 -0.1302291 -0.7896609
-2 39 18 24 11  1.5771695  0.05143036  1.2109266 -2.0028304
-3 68 37 30 14 -0.9567445  1.80052376 -2.2998301  0.5922348
-4 51 22 25  5 -0.9200052 -0.55145776 -1.7199266 -0.4093031
-5 53 27 21 17 -1.9976421  0.10705889  0.3103887 -1.4592661
-6 22 12 13 10 -0.2722960  0.78912404  0.9764830  0.1501300</code></pre>
+<pre><code>    N  m1  m2  k    res_div    hab_pref   sympatry       prod
+1  22  15  11  9 -1.4805676  1.92671883 -0.1302291 -0.7896609
+2  79  42  39 22  1.5771695  0.05143036  1.2109266 -2.0028304
+3 322 145 160 69 -0.9567445  1.80052376 -2.2998301  0.5922348
+4 118  62  62 24 -0.9200052 -0.55145776 -1.7199266 -0.4093031
+5 122  56  66 45 -1.9976421  0.10705889  0.3103887 -1.4592661
+6  42  17  14  9 -0.2722960  0.78912404  0.9764830  0.1501300</code></pre>
 </div>
 </div>
-<hr>
-</section>
-</section>
-<section id="binomial-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="binomial-distribution">Binomial Distribution</h2>
-<section id="mathematical-formulation-1" class="level3">
-<h3 class="anchored" data-anchor-id="mathematical-formulation-1">Mathematical Formulation</h3>
-<p>For each site <span class="math inline">\(i\)</span> out of <span class="math inline">\(N = 100\)</span>, the probability of co-occurrence <span class="math inline">\(p_i\)</span> is governed by the logit link function:</p>
-<p><span class="math display">\[\text{logit}(p_i) = \beta_{0} + \beta_{res.div} \cdot X_{1,i} + \beta_{hab.pref} \cdot X_{2,i} + \beta_{sympatry} \cdot X_{3,i} + \beta_{prod} \cdot X_{4,i}\]</span></p>
-<p>The observed co-occurrence <span class="math inline">\(Y_i\)</span> is modeled as a Binomial process representing local survey plots within that site:</p>
-<p><span class="math display">\[Y_i \sim \text{Binomial}(M_i, p_i)\]</span></p>
-<p>where <span class="math inline">\(M_i\)</span> is the number of sampling efforts at site <span class="math inline">\(i\)</span>.</p>
-</section>
-<section id="data-generation-1" class="level3">
-<h3 class="anchored" data-anchor-id="data-generation-1">Data Generation</h3>
 <hr>
 </section>
 </section>
 </section>
 <section id="modeling" class="level1">
 <h1>Modeling</h1>
-<p><span class="math display">\[\begin{aligned}
-K_{ij} &amp;\sim \text{fnchypg}(\vec{m}_i, N - \vec{m}_i, \vec{m}_j, e^\alpha) \\
-\alpha &amp;= \beta_0 + \lambda_i + \lambda_j + \beta X \\
-\beta_k &amp;\sim \text{N}(0, 1) \\
-\beta_0 &amp;\sim \text{N}(0, 4) \\
-\lambda_i &amp;\sim \text{N}(0, 1)
-\end{aligned}\]</span><br>
-</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(m_fisher_rethinking)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             mean         sd       5.5%      94.5%     rhat ess_bulk
+b0      0.5317016 0.03056005  0.4816850  0.5799227 1.000162 5303.058
+b_res  -0.7607146 0.03619956 -0.8181888 -0.7039827 1.000847 5873.876
+b_hab   0.6043155 0.02987302  0.5564180  0.6536638 1.001182 4780.211
+b_sym   1.1920371 0.03251377  1.1405650  1.2445739 1.000800 5716.400
+b_prod  0.2420632 0.03110117  0.1926518  0.2920215 0.999909 5588.078</code></pre>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
 </section>
 
 </main>
